@@ -1,7 +1,11 @@
 var express = require('express')
 var router  = express.Router()
 
+<<<<<<< HEAD
 var game = require('../lib/game');
+=======
+var step = -1;
+>>>>>>> eedb6462d8edcce3a58d518a93c88f657e1fa3ec
 
 // Handle POST request to '/start'
 router.post('/start', function (req, res) {
@@ -23,6 +27,9 @@ router.post('/start', function (req, res) {
 
 // Handle POST request to '/move'
 router.post('/move', function (req, res) {
+
+  return res.json(circle());
+
   // Request
   var payload = req.body;
   console.log(payload);
@@ -30,6 +37,9 @@ router.post('/move', function (req, res) {
   // Find me
   var me = payload.you;
   console.log(me);
+  if (me === undefined) {
+    return up();
+  }
 
   // Where am I
   var snakes = payload.snakes;
@@ -49,6 +59,7 @@ router.post('/move', function (req, res) {
   console.log('Food location: ' + food);
 
   // Response data
+<<<<<<< HEAD
 console.log('trying move');
   if (game.moveOk('down')) {
     var data = down();
@@ -59,9 +70,37 @@ console.log('trying move');
   } else {
     var data = right();
   }
+=======
+  var data = goToFood(food, meSnake.coords);
+>>>>>>> eedb6462d8edcce3a58d518a93c88f657e1fa3ec
 
   return res.json(data)
 })
+
+function circle() {
+  if (step == 3) {
+    step = -1;
+  }
+
+  step = step + 1;
+  if (step == 0) {
+    return up();
+  }
+  if (step == 1) {
+    return right();
+  }
+  if (step == 2) {
+    return down();
+  }
+
+  return left();
+}
+
+function goToFood(food, meSnake) {
+  console.log("food" + food[0]);
+  console.log("meSnake" + meSnake)
+
+}
 
 function up() {
   return {
