@@ -18,7 +18,20 @@ router.post('/start', function (req, res) {
 
 // Handle POST request to '/move'
 router.post('/move', function (req, res) {
-  console.log(req.body);
+  // Request
+  var payload = req.body;
+  console.log(payload);
+
+  // Find me
+  var me = payload.you;
+  console.log(me);
+
+  // Where am I
+  var snakes = payload.snakes;
+  console.log(JSON.stringify(snakes));
+  for (i in snakes) {
+    console.log(snakes[i]);
+  }
 
   // Response data
   var data = {
