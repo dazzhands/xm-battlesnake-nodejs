@@ -1,6 +1,8 @@
 var express = require('express')
 var router  = express.Router()
 
+var step = 0;
+
 // Handle POST request to '/start'
 router.post('/start', function (req, res) {
   // NOTE: Do something here to start the game
@@ -21,6 +23,9 @@ router.post('/start', function (req, res) {
 
 // Handle POST request to '/move'
 router.post('/move', function (req, res) {
+
+  return circle();
+
   // Request
   var payload = req.body;
   console.log(payload);
@@ -55,7 +60,30 @@ router.post('/move', function (req, res) {
   return res.json(data)
 })
 
+function circle() {
+  if (step = 3) {
+    step = -1;
+  }
+
+  step++;
+  if (step == 0) {
+    return up();
+  }
+  if (step == 1) {
+    return right();
+  }
+  if (step == 2) {
+    return down();
+  }
+  if (step == 3) {
+    return left();
+  }
+
+}
+
 function goToFood(food, meSnake) {
+  console.log("food" + food[0]);
+  console.log("meSnake" + meSnake)
 
 }
 
