@@ -61,9 +61,6 @@ router.post('/move', function (req, res) {
 })
 
 function goToFood(food, meSnake) {
-  console.log("food" + food[0]);
-  console.log("meSnake" + meSnake[0]);
-
   var food_x = food[0][0];
   var snake_x = meSnake[0][0];
   console.log(food_x);
