@@ -1,6 +1,8 @@
 var express = require('express')
 var router  = express.Router()
 
+var game = require('../lib/game');
+
 // Handle POST request to '/start'
 router.post('/start', function (req, res) {
   // NOTE: Do something here to start the game
@@ -44,10 +46,19 @@ router.post('/move', function (req, res) {
 
   // Where is food
   var food = payload.food;
-  console.log(food);
+  console.log('Food location: ' + food);
 
   // Response data
-  var data = down();
+console.log('trying move');
+  if (game.moveOk('down')) {
+    var data = down();
+  } else if (game.moveOk('up')) {
+    var data = up();
+  } else if (game.moveOk('left')) {
+    var data = left();
+  } else {
+    var data = right();
+  }
 
   return res.json(data)
 })
