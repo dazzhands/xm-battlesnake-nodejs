@@ -31,18 +31,53 @@ router.post('/move', function (req, res) {
 
   // Where am I
   var snakes = payload.snakes;
+  var meSnake;
   console.log(JSON.stringify(snakes));
   for (i in snakes) {
     console.log(snakes[i]);
+    if (snakes[i].id == me) {
+      meSnake = snakes[i];
+    }
   }
+  console.log("This is me: " + JSON.stringify(meSnake));
+  console.log("This is where I am: " + meSnake.coords);
+
+  // Where is food
+  var food = payload.food;
+  console.log(food);
 
   // Response data
-  var data = {
-    move: 'up', // one of: ['up','down','left','right']
-    taunt: 'Outta my way, snake!', // optional, but encouraged!
-  }
+  var data = down();
 
   return res.json(data)
 })
+
+function up() {
+  return {
+    move: 'up', // one of: ['up','down','left','right']
+    taunt: 'Outta my way, snake!', // optional, but encouraged!
+  }
+}
+
+function down() {
+  return {
+    move: 'down', // one of: ['up','down','left','right']
+    taunt: 'Kiss my *ss, snake!', // optional, but encouraged!
+  }
+}
+
+function left() {
+  return {
+    move: 'left', // one of: ['up','down','left','right']
+    taunt: 'Kiss my *ss, snake!', // optional, but encouraged!
+  }
+}
+
+function right() {
+  return {
+    move: 'right', // one of: ['up','down','left','right']
+    taunt: 'Kiss my *ss, snake!', // optional, but encouraged!
+  }
+}
 
 module.exports = router
