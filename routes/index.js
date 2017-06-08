@@ -1,7 +1,7 @@
 var express = require('express')
 var router  = express.Router()
 
-var step = 0;
+var step = -1;
 
 // Handle POST request to '/start'
 router.post('/start', function (req, res) {
@@ -24,7 +24,7 @@ router.post('/start', function (req, res) {
 // Handle POST request to '/move'
 router.post('/move', function (req, res) {
 
-  return circle();
+  return res.json(circle());
 
   // Request
   var payload = req.body;
@@ -61,11 +61,11 @@ router.post('/move', function (req, res) {
 })
 
 function circle() {
-  if (step = 3) {
+  if (step == 3) {
     step = -1;
   }
 
-  step++;
+  step = step + 1;
   if (step == 0) {
     return up();
   }
@@ -75,10 +75,8 @@ function circle() {
   if (step == 2) {
     return down();
   }
-  if (step == 3) {
-    return left();
-  }
 
+  return left();
 }
 
 function goToFood(food, meSnake) {
