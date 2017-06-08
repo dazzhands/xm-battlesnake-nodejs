@@ -77,7 +77,7 @@ function goToFood(food, meSnake) {
 
   var food_y = food[0][1];
   var snake_y = meSnake[0][1];
-  if (food_y > snake_y) {
+  if (food_y < snake_y) {
     return up();
   }
 
