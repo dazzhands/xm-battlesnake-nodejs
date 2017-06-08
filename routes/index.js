@@ -28,7 +28,7 @@ router.post('/start', function (req, res) {
 // Handle POST request to '/move'
 router.post('/move', function (req, res) {
 
-  return res.json(circle());
+  // return res.json(circle());
 
   // Request
   var payload = req.body;
@@ -77,29 +77,25 @@ console.log('trying move');
   return res.json(data)
 })
 
-function circle() {
-  if (step == 3) {
-    step = -1;
-  }
-
-  step = step + 1;
-  if (step == 0) {
-    return up();
-  }
-  if (step == 1) {
+function goToFood(food, meSnake) {
+  var food_x = food[0][0];
+  var snake_x = meSnake[0][0];
+  console.log(food_x);
+  console.log(snake_x);
+  if ( food_x > snake_x) {
     return right();
   }
-  if (step == 2) {
-    return down();
+  else if (food_x < snake_x) {
+    return left();
   }
 
-  return left();
-}
+  var food_y = food[0][1];
+  var snake_y = meSnake[0][1];
+  if (food_y < snake_y) {
+    return up();
+  }
 
-function goToFood(food, meSnake) {
-  console.log("food" + food[0]);
-  console.log("meSnake" + meSnake)
-
+  return down();
 }
 
 function up() {
@@ -128,6 +124,25 @@ function right() {
     move: 'right', // one of: ['up','down','left','right']
     taunt: 'Kiss my *ss, snake!', // optional, but encouraged!
   }
+}
+
+function circle() {
+  if (step == 3) {
+    step = -1;
+  }
+
+  step = step + 1;
+  if (step == 0) {
+    return up();
+  }
+  if (step == 1) {
+    return right();
+  }
+  if (step == 2) {
+    return down();
+  }
+
+  return left();
 }
 
 module.exports = router
