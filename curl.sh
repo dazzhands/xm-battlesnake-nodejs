@@ -10,7 +10,7 @@ curl --header "Content-Type: application/json" -XPOST -d '{
                    "health_points": 93,
                    "coords": [
                      [
-                       0,
+                       2,
                        0
                      ],
                      [
