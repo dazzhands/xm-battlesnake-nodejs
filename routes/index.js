@@ -1,12 +1,17 @@
 var express = require('express')
 var router  = express.Router()
 
-var game = require('../lib/game');
+
 var step = -1;
 
 // Handle POST request to '/start'
+var width = 0;
+var height = 0;
 router.post('/start', function (req, res) {
   // NOTE: Do something here to start the game
+var payload = req.body;
+width = payload.width;
+height = payload.height;
 
   // Response data
   var data = {
@@ -56,6 +61,7 @@ router.post('/move', function (req, res) {
   console.log('Food location: ' + food);
 
   // Response data
+setBoard(me, snakes, food); // (myId, snakes, food)
   var data = goToFood(food, meSnake.coords);
 
   return res.json(data)
@@ -68,11 +74,11 @@ function goToFood(food, meSnake) {
   console.log(snake_x);
 
 console.log('trying move');
-  if (game.moveOk('right')) {
+  if (moveOk('right')) {
     var data = right();
-  } else if (game.moveOk('left')) {
+  } else if (moveOk('left')) {
     var data = left();
-  } else if (game.moveOk('up')) {
+  } else if (moveOk('up')) {
     var data = up();
   } else {
     var data = down();
@@ -143,5 +149,89 @@ function circle() {
 
   return left();
 }
+
+
+var grid = {
+  food: [],
+  snakes: []
+};
+
+function setBoard(myId, snakes, food) {
+  grid.food = food;
+  grid.snakes.length = 0;
+
+console.log('myId: '+myId);
+console.log('snakes: '+snakes);
+  var curSnake;
+  for (var i = 0; i < snakes.length; i++) {
+console.log('snake id is: '+snakes[i].id);
+    curSnake = snakes[i];
+    if (snakes[i].id === myId) {
+      grid.me = snakes[i];
+    } else {
+      grid.snakes.push(curSnake);
+    }
+  }
+console.log('board is: '+ JSON.stringify(grid));
+}
+
+function moveOk(dir) {
+console.log('moveok start, dir == ' + dir);
+  var curX = grid.me.coords[0][0];
+  var curY = grid.me.coords[0][1];
+  switch (dir) {
+    case 'left':
+      var newX = curX - 1;
+      if (newX < 0) {
+        return false;
+      }
+      return checkSpot(newX, curY);
+    case 'right':
+      var newX = curX + 1;
+      if (newX > width - 1) {
+        return false;
+      }
+      return checkSpot(newX, curY);
+    case 'up':
+      var newY = curY - 1;
+      if (newY < 0) {
+        return false;
+      }
+      return checkSpot(curX, newY);
+    case 'down':
+      var newY = curY + 1;
+      if (newY > height - 1) {
+        return false;
+      }
+      return checkSpot(curX, newY);
+  }
+  return true;
+};
+
+function checkSpot(x, y) {
+console.log('Can I move to: ' + x + ', ' + y + '?');
+  // check me
+  for (var i = 0 ; i < grid.me.coords.length; i++) {
+    if (grid.me.coords[i][0] == x && grid.me.coords[i][1] == y) {
+console.log('... no. I am in my own way');
+      return false;
+    }
+  }
+
+  // check others
+  for (var i = 0; i < grid.snakes.length; i++) {
+    for (var j = 0 ; j < grid.me.coords.length; j++) {
+      if (grid.snakes[i].coords[j][0] == x && grid.snakes[i].coords[j][1] == y) {
+console.log('... no. ' + grid.snakes[i].name + ' is in the way');
+        return false;
+      }
+    }
+  }
+ 
+console.log('... should be okay I think');
+  return true;
+}
+
+
 
 module.exports = router
