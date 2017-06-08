@@ -28,6 +28,9 @@ router.post('/move', function (req, res) {
   // Find me
   var me = payload.you;
   console.log(me);
+  if (me === undefined) {
+    return up();
+  }
 
   // Where am I
   var snakes = payload.snakes;
@@ -47,10 +50,14 @@ router.post('/move', function (req, res) {
   console.log(food);
 
   // Response data
-  var data = down();
+  var data = goToFood(food, meSnake.coords);
 
   return res.json(data)
 })
+
+function goToFood(food, meSnake) {
+
+}
 
 function up() {
   return {
